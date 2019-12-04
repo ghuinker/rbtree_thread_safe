@@ -36,6 +36,6 @@ class instruction {
     std::vector<action_t> actions;
 };
 
-void read_instruction(instruction *i, char *file);
+int read_instruction(instruction *i, char *file);
 
 #endif

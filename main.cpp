@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "instructions.h"
-
+#include "instruction.h"
 
 int main(int argc, char *argv[]){
   instruction i;
@@ -16,8 +15,8 @@ int main(int argc, char *argv[]){
   }
 
   load_file = argv[1];
-  std::cout << load_file;
-  // read_input_insturctions(&i, input_file);
+
+  read_instruction(&i, load_file);
 
 
 }

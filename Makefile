@@ -7,7 +7,7 @@ CFLAGS = -Wall -Werror -ggdb3 -funroll-loops
 CXXFLAGS = -Wall -Werror -ggdb3 -funroll-loops -std=c++11
 
 BIN = main
-OBJS = main.o
+OBJS = main.o instruction.o
 
 all: $(BIN) etags
 
