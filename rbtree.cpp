@@ -248,9 +248,9 @@ void fix_double_back(node_t *&root, node_t *&node) {
 node_t* replacement_node(node_t *&node){
 	node_t *temp;
 	if(node->left != NULL && node->right != NULL) {
-		temp = node->right;
-		while(temp->left != NULL) {
-			temp = temp->left;
+		temp = node->left;
+		while(temp->right != NULL) {
+			temp = temp->right;
 		}
 		return temp;
 	}
@@ -353,7 +353,7 @@ void delete_node(rbtree *t, node_t *node){
 		return;
 
 	delete_node(t->root, node);
-	delete_fix_tree(t->root, node);
+	// delete_fix_tree(t->root, node);
 }
 
 void print_tree(node_t *node)
@@ -382,7 +382,8 @@ void delete_key(rbtree *t, int key){
 	if(t->root == NULL)
 		return;
 
-	// node_t *node = search_tree(t, key);
+	node_t *node = search_tree(t, key);
+  delete_node(t, node);
 }
 
 void print_tree(rbtree *t)

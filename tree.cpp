@@ -35,5 +35,8 @@ int main(int argc, char *argv[]){
     }
   }
 
+  delete_key(&t,  97);
+  print_tree(&t);
+
 
 }

@@ -24,8 +24,8 @@ class rbtree {
 };
 
 void insert_key(rbtree *t, int key);
-void insert_node(rbtree *t, node_t node);
-void print_tree(rbtree *t);
+void delete_key(rbtree *t, int key);
 node_t* search_tree(rbtree *t, int key);
+void print_tree(rbtree *t);
 
 # endif
