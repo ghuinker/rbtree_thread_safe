@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#include "instruction.h"
+
 enum __attribute__ ((__packed__)) node_color {
   RED,
   BLACK
@@ -23,6 +25,7 @@ class rbtree {
     node_t *root;
 };
 
+void init_tree(rbtree *t, instruction *i);
 void insert_key(rbtree *t, int key);
 void delete_key(rbtree *t, int key);
 node_t* search_tree(rbtree *t, int key);

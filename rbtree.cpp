@@ -4,6 +4,85 @@ using namespace std;
 
 #include "rbtree.h"
 
+void print_tree(node_t *node)
+{
+	if (node == NULL)
+		return;
+
+	cout << node->key << " ";
+	print_tree(node->left);
+	print_tree(node->right);
+}
+
+void print_tree(rbtree *t)
+{
+	print_tree(t->root);
+}
+
+void init_tree(rbtree *t, instruction *i){
+	node_t *temp, *parent;
+	bool flag_right;
+
+	flag_right = false;
+	for(inst_node_t n : i->inst_nodes) {
+		if(n.type != inst_leaf) {
+			if(t->root == NULL) {
+        temp = new node_t{n.value, NULL, NULL, parent, (n.type == inst_red ? RED : BLACK)};
+				t->root = temp;
+			}
+      else {
+          temp->key = n.value;
+          temp->color = (n.type == inst_red ? RED : BLACK);
+          temp->parent = parent;
+      }
+
+			parent = temp;
+			parent->left = new node_t{0};
+      temp = parent->left;
+
+			flag_right = false;
+		}
+		else {
+      if(!flag_right){
+        parent->right = parent->left;
+        parent->left = NULL;
+        temp = parent->right;
+        flag_right = true;
+      }else {
+        // if(parent == t->root) {
+				// 	break;
+				// }
+        delete parent->right;
+				while(parent->parent->right != NULL) {
+					parent = parent->parent;
+				}
+        parent->right = new node_t{0};
+				temp = parent->right;
+      }
+
+
+
+
+
+			if(flag_right) {
+				if(parent == t->root) {
+					break;
+				}
+				while(parent->parent->right != NULL) {
+					parent = parent->parent;
+				}
+				temp = parent->right;
+			}else {
+				temp = parent->right;
+				flag_right = true;
+			}
+
+
+
+		}
+
+	}
+}
 
 void rotate_left(node_t *&root, node_t *&node)
 {
@@ -150,17 +229,17 @@ node_t* insert_node(node_t *&root, node_t *&node){
    Delete Functions
  */
 bool has_red_child(node_t *node){
-	if(node->left != NULL){
-    if(node->left->color == RED){
-      return true;
-    }
-  }
-  if(node->right != NULL){
-    if(node->right->color == RED){
-      return true;
-    }
-  }
-  return false;
+	if(node->left != NULL) {
+		if(node->left->color == RED) {
+			return true;
+		}
+	}
+	if(node->right != NULL) {
+		if(node->right->color == RED) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool on_left(node_t *node){
@@ -211,24 +290,24 @@ void fix_double_back(node_t *&root, node_t *&node) {
 						// left left
 						sibling->left->color = sibling->color;
 						sibling->color = parent->color;
-            rotate_right(root, parent);
+						rotate_right(root, parent);
 					} else {
 						// right left
 						sibling->left->color = parent->color;
-            rotate_right(root, sibling);
-            rotate_left(root, parent);
+						rotate_right(root, sibling);
+						rotate_left(root, parent);
 					}
 				} else {
 					if (on_left(sibling)) {
 						// left right
 						sibling->right->color = parent->color;
-            rotate_left(root, sibling);
-            rotate_right(root, parent);
+						rotate_left(root, sibling);
+						rotate_right(root, parent);
 					} else {
 						// right right
 						sibling->right->color = sibling->color;
 						sibling->color = parent->color;
-            rotate_left(root,parent);
+						rotate_left(root,parent);
 					}
 				}
 				parent->color = BLACK;
@@ -236,7 +315,7 @@ void fix_double_back(node_t *&root, node_t *&node) {
 				// 2 black children
 				sibling->color = RED;
 				if (parent->color == BLACK)
-          fix_double_back(root, parent);
+					fix_double_back(root, parent);
 				else
 					parent->color = BLACK;
 			}
@@ -341,7 +420,7 @@ node_t* search_node(node_t *node, int key){
 }
 
 /*
-   Header Secondary Functions
+   CRITICAL MAIN Functions
  */
 void insert_node(rbtree *t, node_t *node){
 	insert_node(t->root, node);
@@ -356,18 +435,10 @@ void delete_node(rbtree *t, node_t *node){
 	// delete_fix_tree(t->root, node);
 }
 
-void print_tree(node_t *node)
-{
-	if (node == NULL)
-		return;
 
-	cout << node->key << " ";
-	print_tree(node->left);
-	print_tree(node->right);
-}
 
 /*
-   Header Functions
+   CRITICAL Init Functions
  */
 void insert_key(rbtree *t, int key){
 	node_t *node = new node_t{key, NULL, NULL, NULL, RED};
@@ -383,10 +454,5 @@ void delete_key(rbtree *t, int key){
 		return;
 
 	node_t *node = search_tree(t, key);
-  delete_node(t, node);
-}
-
-void print_tree(rbtree *t)
-{
-	print_tree(t->root);
+	delete_node(t, node);
 }

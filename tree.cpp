@@ -29,13 +29,14 @@ int main(int argc, char *argv[]){
   // }
 
   read_instruction(&i, load_file);
-  for (inst_node_t x : i.inst_nodes){
-    if(x.type != inst_leaf){
-      insert_key(&t, x.value);
-    }
-  }
+  init_tree(&t, &i);
 
-  delete_key(&t,  97);
+  // for (inst_node_t x : i.inst_nodes){
+  //   if(x.type != inst_leaf){
+  //     insert_key(&t, x.value);
+  //   }
+  // }
+
   print_tree(&t);
 
 
