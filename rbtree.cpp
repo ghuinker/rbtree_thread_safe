@@ -19,69 +19,33 @@ void print_tree(rbtree *t)
 	print_tree(t->root);
 }
 
+node_t* set_node(instruction *i, node_t *parent, uint16_t *index){
+  node_t *node;
+  ++(*index);
+  if(i->inst_nodes[(*index)].type == inst_leaf){
+    return NULL;
+  }
+
+  node = new node_t{i->inst_nodes[(*index)].value, NULL, NULL, parent, (i->inst_nodes[(*index)].type == inst_black ? RED : BLACK)};
+
+  node->left = set_node(i, node, index);
+  node->right = set_node(i, node, index);
+
+  return node;
+}
+
 void init_tree(rbtree *t, instruction *i){
-	node_t *temp, *parent;
-	bool flag_right;
+  uint16_t index;
 
-	flag_right = false;
-	for(inst_node_t n : i->inst_nodes) {
-		if(n.type != inst_leaf) {
-			if(t->root == NULL) {
-        temp = new node_t{n.value, NULL, NULL, parent, (n.type == inst_red ? RED : BLACK)};
-				t->root = temp;
-			}
-      else {
-          temp->key = n.value;
-          temp->color = (n.type == inst_red ? RED : BLACK);
-          temp->parent = parent;
-      }
+	if(i->inst_nodes.size() == 0 || i->inst_nodes[0].type == inst_leaf){
+    return;
+  }
+  t->root = new node_t{i->inst_nodes[0].value, NULL, NULL, NULL, (i->inst_nodes[0].type == inst_black ? RED : BLACK)};
 
-			parent = temp;
-			parent->left = new node_t{0};
-      temp = parent->left;
-
-			flag_right = false;
-		}
-		else {
-      if(!flag_right){
-        parent->right = parent->left;
-        parent->left = NULL;
-        temp = parent->right;
-        flag_right = true;
-      }else {
-        // if(parent == t->root) {
-				// 	break;
-				// }
-        delete parent->right;
-				while(parent->parent->right != NULL) {
-					parent = parent->parent;
-				}
-        parent->right = new node_t{0};
-				temp = parent->right;
-      }
-
-
-
-
-
-			if(flag_right) {
-				if(parent == t->root) {
-					break;
-				}
-				while(parent->parent->right != NULL) {
-					parent = parent->parent;
-				}
-				temp = parent->right;
-			}else {
-				temp = parent->right;
-				flag_right = true;
-			}
-
-
-
-		}
-
-	}
+  index = 0;
+  t->root->left = set_node(i, t->root, &index);
+  t->root->right = set_node(i, t->root, &index);
+  // cout << index << endl;
 }
 
 void rotate_left(node_t *&root, node_t *&node)
