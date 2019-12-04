@@ -444,10 +444,8 @@ node_t* search_tree(rbtree *t, int key){
   return node;
 }
 
-
-
 /*
-   CRITICAL Init Functions
+   Init Functions
  */
 void insert_key(rbtree *t, int key){
 	node_t *node = new node_t{key, NULL, NULL, NULL, RED};
