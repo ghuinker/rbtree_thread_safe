@@ -4,48 +4,52 @@ using namespace std;
 
 #include "rbtree.h"
 
-void print_tree(node_t *node)
+void print_tree(node_t *node, bool is_root)
 {
-	if (node == NULL)
+	if (node == NULL) {
+		cout << (is_root ? "" : ",") << "f";
 		return;
-
-	cout << node->key << " ";
-	print_tree(node->left);
-	print_tree(node->right);
+	}
+	else{
+		cout << (is_root ? "" : ",") << node->key << (node->color == RED ? "r" : "b");
+    print_tree(node->left, false);
+    print_tree(node->right, false);
+	}
 }
 
 void print_tree(rbtree *t)
 {
-	print_tree(t->root);
+	print_tree(t->root, true);
+	cout << endl;
 }
 
 node_t* set_node(instruction *i, node_t *parent, uint16_t *index){
-  node_t *node;
-  ++(*index);
-  if(i->inst_nodes[(*index)].type == inst_leaf){
-    return NULL;
-  }
+	node_t *node;
+	++(*index);
+	if(i->inst_nodes[(*index)].type == inst_leaf) {
+		return NULL;
+	}
 
-  node = new node_t{i->inst_nodes[(*index)].value, NULL, NULL, parent, (i->inst_nodes[(*index)].type == inst_black ? RED : BLACK)};
+	node = new node_t{i->inst_nodes[(*index)].value, NULL, NULL, parent, (i->inst_nodes[(*index)].type == inst_black ? RED : BLACK)};
 
-  node->left = set_node(i, node, index);
-  node->right = set_node(i, node, index);
+	node->left = set_node(i, node, index);
+	node->right = set_node(i, node, index);
 
-  return node;
+	return node;
 }
 
 void init_tree(rbtree *t, instruction *i){
-  uint16_t index;
+	uint16_t index;
 
-	if(i->inst_nodes.size() == 0 || i->inst_nodes[0].type == inst_leaf){
-    return;
-  }
-  t->root = new node_t{i->inst_nodes[0].value, NULL, NULL, NULL, (i->inst_nodes[0].type == inst_black ? RED : BLACK)};
+	if(i->inst_nodes.size() == 0 || i->inst_nodes[0].type == inst_leaf) {
+		return;
+	}
+	t->root = new node_t{i->inst_nodes[0].value, NULL, NULL, NULL, (i->inst_nodes[0].type == inst_black ? RED : BLACK)};
 
-  index = 0;
-  t->root->left = set_node(i, t->root, &index);
-  t->root->right = set_node(i, t->root, &index);
-  // cout << index << endl;
+	index = 0;
+	t->root->left = set_node(i, t->root, &index);
+	t->root->right = set_node(i, t->root, &index);
+	// cout << index << endl;
 }
 
 void rotate_left(node_t *&root, node_t *&node)
