@@ -28,7 +28,6 @@ int main(int argc, char *argv[]){
   //   load_file = argv[1];
   // }
 
-
   read_instruction(&i, load_file);
   for (inst_node_t x : i.inst_nodes){
     if(x.type != inst_leaf){
@@ -36,7 +35,5 @@ int main(int argc, char *argv[]){
     }
   }
 
-  print_tree(&t);
-  cout << endl;
 
 }
