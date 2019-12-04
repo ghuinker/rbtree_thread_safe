@@ -8,13 +8,15 @@ using namespace std;
 void set_inst_nodes(instruction *i, string s){
 	string token, delimiter;
 	inst_node_type type;
+	inst_node_t node;
 	int value;
+	size_t pos, node_type_pos;
 
 	value = 0;
 
 	delimiter = ",";
 
-	size_t pos = 0;
+	node_type_pos = pos = 0;
 	while(s.length()){
 		if((pos = s.find(delimiter)) != string::npos);
 		else{
@@ -22,21 +24,23 @@ void set_inst_nodes(instruction *i, string s){
 		}
 
 		token = s.substr(0, pos);
-		if(token.find("b") != string::nopos){
-			type = ins_red;
-		}
-		else if(token.find("r") != string::nopos){
+		if((node_type_pos = token.find("b")) != string::npos){
 			type = inst_black;
 		}
-		else if(token.find("f") != string::nopos){
+		else if((node_type_pos = token.find("r")) != string::npos){
+			type = inst_red;
+		}
+		else if(token.find("f") != string::npos){
 			type = inst_leaf;
 		}
 
-		s.erase(0, pos + delimiter.length());
-	}
-	while ((pos = s.find(delimiter)) != string::npos) {
-		token = s.substr(0, pos);
-		cout << token << endl;
+		if(type != inst_leaf){
+			value = stoi(token.substr(0, node_type_pos));
+			node.value = value;
+		}
+		node.type = type;
+		i->inst_nodes.push_back(node);
+
 		s.erase(0, pos + delimiter.length());
 	}
 }
