@@ -32,11 +32,11 @@ int main(int argc, char *argv[]){
   read_instruction(&i, load_file);
   for (inst_node_t x : i.inst_nodes){
     if(x.type != inst_leaf){
-      cout << x.value << " ";
       insert_key(&t, x.value);
     }
   }
 
-  // print_tree(&t);
+  print_tree(&t);
+  cout << endl;
 
 }

@@ -22,8 +22,6 @@ void print_tree(rbtree *t)
 {
     if (t->root == NULL)
         return;
-
-    cout << t->root->key;
     print_tree(t->root);
 }
 
