@@ -30,8 +30,8 @@ class instruction {
   public:
     instruction() :  num_search_threads(0), num_mod_threads(0), inst_nodes(0),
                     actions(0) {};
-    uint8_t num_search_threads;
-    uint8_t num_mod_threads;
+    uint16_t num_search_threads;
+    uint16_t num_mod_threads;
     std::vector<inst_node_t> inst_nodes;
     std::vector<action_t> actions;
 };
