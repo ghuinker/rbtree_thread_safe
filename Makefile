@@ -6,8 +6,8 @@ RM = rm -f
 CFLAGS = -Wall -Werror -ggdb3 -funroll-loops
 CXXFLAGS = -Wall -Werror -ggdb3 -funroll-loops -std=c++11
 
-BIN = main
-OBJS = main.o instruction.o
+BIN = tree
+OBJS = tree.o instruction.o
 
 all: $(BIN) etags
 
