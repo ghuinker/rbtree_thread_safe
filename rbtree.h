@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 enum __attribute__ ((__packed__)) node_color {
-  red,
-  black
+  RED,
+  BLACK
 };
 
 typedef struct node {
