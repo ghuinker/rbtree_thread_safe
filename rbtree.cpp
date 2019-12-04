@@ -30,7 +30,7 @@ node_t* set_node(instruction *i, node_t *parent, uint16_t *index){
 		return NULL;
 	}
 
-	node = new node_t{i->inst_nodes[(*index)].value, NULL, NULL, parent, (i->inst_nodes[(*index)].type == inst_black ? RED : BLACK)};
+	node = new node_t{i->inst_nodes[(*index)].value, NULL, NULL, parent, (i->inst_nodes[(*index)].type == inst_red ? RED : BLACK)};
 
 	node->left = set_node(i, node, index);
 	node->right = set_node(i, node, index);
@@ -44,7 +44,7 @@ void init_tree(rbtree *t, instruction *i){
 	if(i->inst_nodes.size() == 0 || i->inst_nodes[0].type == inst_leaf) {
 		return;
 	}
-	t->root = new node_t{i->inst_nodes[0].value, NULL, NULL, NULL, (i->inst_nodes[0].type == inst_black ? RED : BLACK)};
+	t->root = new node_t{i->inst_nodes[0].value, NULL, NULL, NULL, (i->inst_nodes[0].type == inst_red ? RED : BLACK)};
 
 	index = 0;
 	t->root->left = set_node(i, t->root, &index);
