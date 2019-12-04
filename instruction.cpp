@@ -5,7 +5,76 @@ using namespace std;
 
 #include "instruction.h"
 
-int read_instruction(instruction *d, char *file){
+void set_inst_nodes(instruction *i, string s){
+	string token, delimiter;
+	inst_node_type type;
+	int value;
+
+	value = 0;
+
+	delimiter = ",";
+
+	size_t pos = 0;
+	while(s.length()){
+		if((pos = s.find(delimiter)) != string::npos);
+		else{
+			pos = s.length()-1;
+		}
+
+		token = s.substr(0, pos);
+		if(token.find("b") != string::nopos){
+			type = ins_red;
+		}
+		else if(token.find("r") != string::nopos){
+			type = inst_black;
+		}
+		else if(token.find("f") != string::nopos){
+			type = inst_leaf;
+		}
+
+		s.erase(0, pos + delimiter.length());
+	}
+	while ((pos = s.find(delimiter)) != string::npos) {
+		token = s.substr(0, pos);
+		cout << token << endl;
+		s.erase(0, pos + delimiter.length());
+	}
+}
+
+void set_actions(instruction *i, string s){
+	string token, delimiter;
+	int value;
+	action_type type;
+	action_t action;
+
+	delimiter = ")";
+	value = 0;
+
+	size_t pos = 0;
+	while ((pos = s.find(delimiter)) != string::npos) {
+
+		token = s.substr(0, pos);
+		if(token.find("insert") != string::npos) {
+			type = act_insert;
+		}
+		else if(token.find("search") != string::npos) {
+			type = act_search;
+		}
+		else if(token.find("delete") != string::npos) {
+			type = act_delete;
+		}
+		value = stoi(token.substr(token.find("(") + 1, token.find(")")));
+
+		action.type = type;
+		action.value = value;
+
+		i->actions.push_back(action);
+
+		s.erase(0, pos + delimiter.length());
+	}
+}
+
+int read_instruction(instruction *i, char *file){
 	string line, init_tree, actions;
 	ifstream f(file);
 	uint16_t num_search_threads;
@@ -21,14 +90,14 @@ int read_instruction(instruction *d, char *file){
 			else if(line.find("Modify") != string::npos) {
 				num_mod_threads = stoi(line.substr(line.find(":") + 1));
 			}
-			else if(	line.find("search(") != string::npos ||
-								line.find("insert(") != string::npos ||
-								line.find("delete(") != string::npos
-							){
+			else if(        line.find("search(") != string::npos ||
+			                line.find("insert(") != string::npos ||
+			                line.find("delete(") != string::npos
+			                ) {
 				actions = line;
 			}
 			else{
-				if(line.length() > 0){
+				if(line.length() > 0) {
 					init_tree = line;
 				}
 			}
@@ -39,10 +108,10 @@ int read_instruction(instruction *d, char *file){
 		exit(-1);
 	}
 
-	cout << num_search_threads << endl;
-	cout << num_mod_threads << endl;
-	cout << actions + "\n";
-	cout << init_tree + "\n";
+	i->num_search_threads = num_search_threads;
+	i->num_mod_threads = num_mod_threads;
+	set_inst_nodes(i, init_tree);
+	set_actions(i, actions);
 
 
 	return 0;
