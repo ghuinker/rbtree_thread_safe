@@ -1,8 +1,22 @@
 #include <stdio.h>
 #include <iostream>
+#include <semaphore.h>
 using namespace std;
 
 #include "rbtree.h"
+
+void signal_wsem(rbtree *t){
+	sem_wait(t->wsem);
+};
+void wait_wsem(rbtree *t){
+	sem_post(t->wsem);
+};
+void signal_x(rbtree *t){
+	sem_post(t->x);
+};
+void wait_x(rbtree *t){
+	sem_wait(t->x);
+};
 
 void print_tree(node_t *node, bool is_root)
 {
@@ -12,8 +26,8 @@ void print_tree(node_t *node, bool is_root)
 	}
 	else{
 		cout << (is_root ? "" : ",") << node->key << (node->color == RED ? "r" : "b");
-    print_tree(node->left, false);
-    print_tree(node->right, false);
+		print_tree(node->left, false);
+		print_tree(node->right, false);
 	}
 }
 
@@ -21,6 +35,11 @@ void print_tree(rbtree *t)
 {
 	print_tree(t->root, true);
 	cout << endl;
+}
+
+void init_sems(rbtree *t){
+	sem_init(t->wsem, 0, 1);
+	sem_init(t->x, 0, 1);
 }
 
 node_t* set_node(instruction *i, node_t *parent, uint16_t *index){
@@ -391,16 +410,38 @@ node_t* search_node(node_t *node, int key){
    CRITICAL MAIN Functions
  */
 void insert_node(rbtree *t, node_t *node){
+  wait_wsem(t);
 	insert_node(t->root, node);
 	insert_fix_tree(t->root, node);
+  signal_wsem(t);
 }
 
 void delete_node(rbtree *t, node_t *node){
 	if(t->root == NULL)
 		return;
-
+  wait_wsem(t);
 	delete_node(t->root, node);
-	// delete_fix_tree(t->root, node);
+  signal_wsem(t);
+}
+
+node_t* search_tree(rbtree *t, int key){
+  node_t *node;
+
+  wait_x(t);
+  t->reader_count++;
+  if(t->reader_count == 1){
+    wait_wsem(t);
+  }
+  signal_x(t);
+  //Crital Section
+	node =  search_node(t->root, key);
+  wait_x(t);
+  t->reader_count--;
+  if(t->reader_count == 0){
+    signal_wsem(t);
+  }
+  signal_x(t);
+  return node;
 }
 
 
@@ -411,10 +452,6 @@ void delete_node(rbtree *t, node_t *node){
 void insert_key(rbtree *t, int key){
 	node_t *node = new node_t{key, NULL, NULL, NULL, RED};
 	insert_node(t, node);
-}
-
-node_t* search_tree(rbtree *t, int key){
-	return search_node(t->root, key);
 }
 
 void delete_key(rbtree *t, int key){

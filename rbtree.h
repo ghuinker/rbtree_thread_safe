@@ -2,6 +2,7 @@
 # define RBTREE_H
 
 #include <stdio.h>
+#include <semaphore.h>
 
 #include "instruction.h"
 
@@ -20,11 +21,18 @@ typedef struct node {
 
 class rbtree {
   public:
-    rbtree(): root{0} {};
+    rbtree(): root{0}, reader_count(0){};
 
     node_t *root;
+    uint16_t reader_count;
+    sem_t *x, *wsem;
 };
 
+void signal_wsem(rbtree *t);
+void wait_wsem(rbtree *t);
+void signal_x(rbtree *t);
+void wait_x(rbtree *t);
+void init_sems(rbtree *t);
 void init_tree(rbtree *t, instruction *i);
 void insert_key(rbtree *t, int key);
 void delete_key(rbtree *t, int key);
