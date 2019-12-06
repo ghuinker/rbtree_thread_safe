@@ -83,7 +83,7 @@ void *mod_thread(void *mod_arg)
 
 void execute_work(manager *m, rbtree *t){
 	int i;
-  pthread_t thread_id;
+  pthread_t thread_id[m->mod_actions_length + m->search_actions_length];
   thread_object_t *thread_object;
 
   thread_object = new thread_object_t;
@@ -92,13 +92,16 @@ void execute_work(manager *m, rbtree *t){
   thread_object->t = t;
 
   for(i=0; i<m->mod_actions_length; i++){
-    pthread_create(&thread_id, NULL, search_thread, thread_object);
+    pthread_create(&thread_id[i], NULL, mod_thread, thread_object);
   }
   for(i=0; i<m->search_actions_length; i++){
-    pthread_create(&thread_id, NULL, search_thread, thread_object);
+    pthread_create(&thread_id[i+m->mod_actions_length], NULL, search_thread, thread_object);
   }
   m->start_work = true;
-	pthread_join(thread_id, NULL);
+
+  for(i=0; i<(m->mod_actions_length + m->search_actions_length); i++){
+    pthread_join(thread_id[i], NULL);
+  }
 
 }
 
