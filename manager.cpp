@@ -25,7 +25,7 @@ uint16_t get_index(manager *m, bool is_mod){
     m->search_action_index++;
     sem_post(m->search_sem);
   }
-
+  
   return index;
 }
 
@@ -38,12 +38,11 @@ void *search_thread(void *search_arg)
 
   search_obj = (thread_object_t *) search_arg;
 
-  cout << "SEARCH" << endl;
-
   //wait until all threads are initialized
   while(!search_obj->m->start_work);
 
-  while((index = get_index(search_obj->m, false)) < search_obj->m->search_actions_length -1){
+  while((index = get_index(search_obj->m, false)) < search_obj->m->search_actions_length){
+    cout << "SEARCH: " << search_obj->m->search_actions[index].value << endl;
     action = search_obj->m->search_actions[index];
     if(action.type == act_search){
       node = search_tree(search_obj->t, action.value);
@@ -63,12 +62,11 @@ void *mod_thread(void *mod_arg)
 
   mod_obj = (thread_object_t *) mod_arg;
 
-  cout << "MOD" << endl;
-
   //wait until all threads are initialized
   while(!mod_obj->m->start_work);
 
-  while((index = get_index(mod_obj->m, true)) < mod_obj->m->mod_actions_length -1){
+  while((index = get_index(mod_obj->m, true)) < mod_obj->m->mod_actions_length){
+    cout << "MOD: " << mod_obj->m->mod_actions[index].value << endl;
     action = mod_obj->m->mod_actions[index];
     if(action.type == act_insert){
       insert_key(mod_obj->t, action.value);
