@@ -1,6 +1,6 @@
-107b,53r,46b,18r,f,81b,f,f,152r,124b,f,f,191b,155r,f,f,200r,f,f
+110b,41r,18b,13b,4b,3r,f,f,5r,f,f,14r,13b,f,f,16b,f,17r,f,f,30b,23r,20b,f,f,26b,f,27r,f,f,36r,33b,31r,f,f,f,38b,37r,f,f,40r,f,f,65b,55b,46r,44b,f,f,51b,f,54r,f,f,61r,56b,f,60r,f,f,62b,f,f,89r,72b,66b,f,f,f,75r,73b,72r,f,f,f,80b,79r,f,f,83r,f,f,103b,95b,92r,f,f,100r,f,f,105b,104r,f,f,109r,f,f,149b,122r,113b,110b,f,f,f,120r,115b,114r,f,f,119r,f,f,121b,f,f,131b,127r,122b,123r,f,f,126r,f,f,128b,127r,f,f,129r,f,f,134r,132b,f,133r,f,f,145b,141r,f,f,148r,f,f,178r,163b,157r,154b,151r,f,f,155r,f,f,159b,f,f,167r,165b,f,f,173b,172r,f,f,174r,f,f,194b,180r,178b,f,f,191b,f,192r,f,f,198b,197r,f,f,f
 
-Search threads: 8
+Search threads: 6
 Modify threads: 10
 
-insert(22)  || insert(30) || insert(50) || delete(191) || delete(50) || insert(250) || insert(150) || search(191) || search(81) || delete(124)
+insert(22)  || insert(30) || insert(50) || delete(26) || delete(37) || insert(250) || insert(150) || delete(50) || insert(100) || search(37) || search(31) || search(72) || search(75)

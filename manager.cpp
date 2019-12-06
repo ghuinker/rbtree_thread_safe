@@ -9,7 +9,7 @@ using namespace std;
 typedef struct thread_object {
 	rbtree *t;
 	manager *m;
-  pthread_t *thread_id;
+  uint16_t id;
 } thread_object_t;
 
 uint16_t get_index(manager *m, bool is_mod){
@@ -35,7 +35,6 @@ void *search_thread(void *search_arg)
   thread_object_t *search_obj;
 	uint16_t index;
   action_t action;
-  node_t *node;
 
   search_obj = (thread_object_t *) search_arg;
 
@@ -43,14 +42,11 @@ void *search_thread(void *search_arg)
   while(!search_obj->m->start_work);
 
   while((index = get_index(search_obj->m, false)) < search_obj->m->search_actions_length){
-    // cout << "SEARCH: " << search_obj->m->search_actions[index].value << endl;
+    cout << search_obj->id << "-SEARCH: " << search_obj->m->search_actions[index].value << endl;
     action = search_obj->m->search_actions[index];
     if(action.type == act_search){
-      node = search_tree(search_obj->t, action.value);
+      search_tree(search_obj->t, action.value);
     }
-  }
-  if(node != NULL){
-    cout << node->key << endl;
   }
   return 0;
 }
@@ -67,7 +63,7 @@ void *mod_thread(void *mod_arg)
   while(!mod_obj->m->start_work);
 
   while((index = get_index(mod_obj->m, true)) < mod_obj->m->mod_actions_length){
-    // cout << "MOD: " << mod_obj->m->mod_actions[index].value << endl;
+    cout << mod_obj->id << "-MOD: " << mod_obj->m->mod_actions[index].value << endl;
     action = mod_obj->m->mod_actions[index];
     if(action.type == act_insert){
       insert_key(mod_obj->t, action.value);
@@ -85,17 +81,22 @@ void execute_work(manager *m, rbtree *t){
   pthread_t thread_id[m->mod_actions_length + m->search_actions_length];
   thread_object_t *thread_object;
 
-  thread_object = new thread_object_t;
 
-  thread_object->m = m;
-  thread_object->t = t;
 
   for(i=0; i<m->mod_actions_length; i++){
-    thread_object->thread_id = &thread_id[i];
+    thread_object = new thread_object_t;
+
+    thread_object->m = m;
+    thread_object->t = t;
+    thread_object->id = i;
     pthread_create(&thread_id[i], NULL, mod_thread, thread_object);
   }
   for(i=0; i<m->search_actions_length; i++){
-    thread_object->thread_id = &thread_id[i+m->mod_actions_length];
+    thread_object = new thread_object_t;
+
+    thread_object->m = m;
+    thread_object->t = t;
+    thread_object->id = i;
     pthread_create(&thread_id[i+m->mod_actions_length], NULL, search_thread, thread_object);
   }
   m->start_work = true;

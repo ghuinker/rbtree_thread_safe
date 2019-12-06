@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <chrono>
 using namespace std;
 
 #include "instruction.h"
@@ -11,6 +12,10 @@ int main(int argc, char *argv[]){
   rbtree t;
   manager m;
   char *load_file;
+
+
+  auto start = chrono::high_resolution_clock::now();
+
 
   load_file = NULL;
 
@@ -43,5 +48,7 @@ int main(int argc, char *argv[]){
 
   print_tree(&t);
 
-
+  auto end = chrono::high_resolution_clock::now();
+  auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+  cout << "time: " << duration.count() << endl;
 }

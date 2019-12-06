@@ -68,7 +68,6 @@ void init_tree(rbtree *t, instruction *i){
 	index = 0;
 	t->root->left = set_node(i, t->root, &index);
 	t->root->right = set_node(i, t->root, &index);
-	// cout << index << endl;
 
 	t->wsem = new sem_t;
 	t->x = new sem_t;
