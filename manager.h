@@ -14,7 +14,6 @@ public:
   bool start_work;
   uint16_t mod_action_index;
   uint16_t search_action_index;
-  uint16_t actions_length;
 
   std::vector<action_t> *actions;
 };

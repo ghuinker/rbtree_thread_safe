@@ -3,18 +3,46 @@
 # include "manager.h"
 # include "rbtree.h"
 
+typedef struct mod_obj {
+	rbtree *t;
+	manager *m;
+} mod_obj_t;
 
-int g = 0;
+uint16_t get_index(manager *m, bool is_mod){
+  uint16_t index;
 
-// The function to be executed by all threads
-void *myThreadFun(void *vargp)
+  if(is_mod){
+    wait_mod_index(m);
+    index = mod_obj->m->mod_action_index;
+    mod_obj->m->mod_action_index++;
+    signal_mod_index(m);
+  } else {
+    wait_search_index(m);
+    index = mod_obj->m->search_action_index;
+    mod_obj->m->search_action_index++;
+    signal_search_index(m);
+  }
+
+  return index;
+}
+
+void *mod_thread(mod_obj_t *mod_obj)
 {
-    static int s = 0;
+	uint16_t index;
+  action_t action;
 
-    ++s; ++g;
+  //wait until all threads are initialized
+  while(!mod_obj->start_work);
 
-    printf("New Thread");
-    return 0;
+  while((index = get_index(mode_obj->m, true)) < mod_obj->mod_actions_length -1){
+    action = mod_obj->mod_actions[index];
+    if(action.type == act_insert){
+      insert_key(mod_obj->t, action.value);
+    }
+    if(action.type == act_delete){
+      insert_key(mod_obj->t, action.value);
+    }
+  }
 }
 
 
@@ -31,6 +59,5 @@ void execute_work(manager *m, rbtree *t){
 
 void init_manager(manager *m, rbtree *t, instruction *i){
 	m->actions_length = i->actions_length;
-	m->actions = &i->actions;
 
 }
