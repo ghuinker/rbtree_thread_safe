@@ -82,6 +82,17 @@ void init_manager(manager *m, rbtree *t, instruction *i){
   sem_init(&mutex, 0, 1);
   //Remember to destoruy
 
+  /*
+  Left off:
+    Init sempahores in this and rbtree
+    then add mod_objects and search objects to manager
+    then in execute do for each mod_object in whatever
+    then for now print result of everything for testing
+
+    then add result node and id to object
+
+  */
+
 	for(action_t a:i->actions){
     if(a.type == act_search){
       m->search_actions.push_back(a);
