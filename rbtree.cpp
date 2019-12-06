@@ -133,7 +133,7 @@ void insert_fix_tree(node_t *&root, node_t *&node){
 	node_t *parent_node = NULL;
 	node_t *grand_parent_node = NULL;
 
-	while ((node != root) && (node->color != BLACK) &&
+	while ((node != root) && (node->color != BLACK) && (node->parent != NULL) &&
 	       (node->parent->color == RED))
 	{
 
@@ -393,10 +393,6 @@ void delete_node(node_t *&root, node_t *&node){
 	delete_node(root, replace_node);
 }
 
-void delete_fix_tree(node_t *&root, node_t *&node){
-
-}
-
 node_t* search_node(node_t *node, int key){
 	node_t *temp;
 	if(node == NULL)
@@ -423,6 +419,8 @@ void insert_node(rbtree *t, node_t *node){
 
 void delete_node(rbtree *t, node_t *node){
 	if(t->root == NULL)
+		return;
+	if(node == NULL)
 		return;
   wait_wsem(t);
 	delete_node(t->root, node);

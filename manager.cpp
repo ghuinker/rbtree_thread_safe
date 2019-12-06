@@ -9,6 +9,7 @@ using namespace std;
 typedef struct thread_object {
 	rbtree *t;
 	manager *m;
+  pthread_t *thread_id;
 } thread_object_t;
 
 uint16_t get_index(manager *m, bool is_mod){
@@ -25,7 +26,7 @@ uint16_t get_index(manager *m, bool is_mod){
     m->search_action_index++;
     sem_post(m->search_sem);
   }
-  
+
   return index;
 }
 
@@ -42,7 +43,7 @@ void *search_thread(void *search_arg)
   while(!search_obj->m->start_work);
 
   while((index = get_index(search_obj->m, false)) < search_obj->m->search_actions_length){
-    cout << "SEARCH: " << search_obj->m->search_actions[index].value << endl;
+    // cout << "SEARCH: " << search_obj->m->search_actions[index].value << endl;
     action = search_obj->m->search_actions[index];
     if(action.type == act_search){
       node = search_tree(search_obj->t, action.value);
@@ -66,7 +67,7 @@ void *mod_thread(void *mod_arg)
   while(!mod_obj->m->start_work);
 
   while((index = get_index(mod_obj->m, true)) < mod_obj->m->mod_actions_length){
-    cout << "MOD: " << mod_obj->m->mod_actions[index].value << endl;
+    // cout << "MOD: " << mod_obj->m->mod_actions[index].value << endl;
     action = mod_obj->m->mod_actions[index];
     if(action.type == act_insert){
       insert_key(mod_obj->t, action.value);
@@ -90,9 +91,11 @@ void execute_work(manager *m, rbtree *t){
   thread_object->t = t;
 
   for(i=0; i<m->mod_actions_length; i++){
+    thread_object->thread_id = &thread_id[i];
     pthread_create(&thread_id[i], NULL, mod_thread, thread_object);
   }
   for(i=0; i<m->search_actions_length; i++){
+    thread_object->thread_id = &thread_id[i+m->mod_actions_length];
     pthread_create(&thread_id[i+m->mod_actions_length], NULL, search_thread, thread_object);
   }
   m->start_work = true;
