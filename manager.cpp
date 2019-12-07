@@ -94,19 +94,19 @@ void *thread_function(void *args){
 void execute_work(manager *m, rbtree *t, instruction *inst){
 	uint16_t i, mod_count, search_count;
 	pthread_t thread_id[inst->num_mod_threads + inst->num_search_threads];
-	thread_object_t thread_args;
+	thread_object_t *thread_args;
 
 	i = mod_count = search_count = 0;
 
 	while((mod_count + search_count) < (inst->num_mod_threads + inst->num_search_threads)){
 		if(mod_count < inst->num_mod_threads){
-			thread_args = {t, m, true, i};
-			pthread_create(&thread_id[i++], NULL, thread_function, &thread_args);
+			thread_args = new thread_object_t{t, m, true, i};
+			pthread_create(&thread_id[i++], NULL, thread_function, thread_args);
 			mod_count++;
 		}
 		if(search_count < inst->num_search_threads){
-			thread_args = {t, m, false, i};
-			pthread_create(&thread_id[i++], NULL, thread_function, &thread_args);
+			thread_args = new thread_object_t{t, m, false, i};
+			pthread_create(&thread_id[i++], NULL, thread_function, thread_args);
 			search_count++;
 		}
 	}
