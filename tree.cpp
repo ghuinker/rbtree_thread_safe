@@ -38,9 +38,9 @@ int main(int argc, char *argv[]){
   read_instruction(&i, load_file);
   init_tree(&t, &i);
   init_manager(&m, &t, &i);
-  execute_work(&m, &t);
+  execute_work(&m, &t, &i);
 
-  
+
   print_tree(&t);
 
   auto end = chrono::high_resolution_clock::now();

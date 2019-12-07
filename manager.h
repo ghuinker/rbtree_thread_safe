@@ -24,7 +24,7 @@ std::vector<action_t> search_actions;
 sem_t *mod_sem, *search_sem;
 };
 
-void execute_work(manager *m, rbtree *t);
+void execute_work(manager *m, rbtree *t, instruction *i);
 void init_manager(manager *m, rbtree *t, instruction *i);
 
 # endif

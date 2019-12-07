@@ -72,33 +72,35 @@ void *mod_thread(void *mod_arg)
 }
 
 
-void execute_work(manager *m, rbtree *t){
-	int i;
+void execute_work(manager *m, rbtree *t, instruction *i){
+	int index, mod_count, search_count;
   pthread_t thread_id[m->mod_actions_length + m->search_actions_length];
   thread_object_t *thread_object;
 
 
+	for(index =0; index < (i->num_search_threads + i->num_mod_threads); index++){
+		if(mod_count < m->mod_actions_length){
+			thread_object = new thread_object_t;
 
-  for(i=0; i<m->mod_actions_length; i++){
-    thread_object = new thread_object_t;
+	    thread_object->m = m;
+	    thread_object->t = t;
+	    thread_object->id = index;
+	    pthread_create(&thread_id[index], NULL, mod_thread, thread_object);
+			mod_count++;
+		}
+		if(search_count < m->search_actions_length){
+			thread_object = new thread_object_t;
 
-    thread_object->m = m;
-    thread_object->t = t;
-    thread_object->id = i;
-    pthread_create(&thread_id[i], NULL, mod_thread, thread_object);
-  }
-  for(i=0; i<m->search_actions_length; i++){
-    thread_object = new thread_object_t;
+	    thread_object->m = m;
+	    thread_object->t = t;
+	    thread_object->id = index;
+	    pthread_create(&thread_id[index], NULL, search_thread, thread_object);
+			search_count++;
+		}
+	}
 
-    thread_object->m = m;
-    thread_object->t = t;
-    thread_object->id = i;
-    pthread_create(&thread_id[i+m->mod_actions_length], NULL, search_thread, thread_object);
-  }
-  m->start_work = true;
-
-  for(i=0; i<(m->mod_actions_length + m->search_actions_length); i++){
-    pthread_join(thread_id[i], NULL);
+  for(index=0; index<(i->num_search_threads + i->num_mod_threads); index++){
+    pthread_join(thread_id[index], NULL);
   }
 
 }
