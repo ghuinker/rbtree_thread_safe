@@ -26,9 +26,6 @@ void *thread_function(void *args){
 	m=thread_obj->m;
 	t=thread_obj->t;
 
-	//wait until all threads are initialized
-	while(!m->start_work);
-
 	while(thread_obj->action != NULL) {
 		action=thread_obj->action;
 
