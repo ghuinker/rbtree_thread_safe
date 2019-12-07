@@ -40,15 +40,10 @@ int main(int argc, char *argv[]){
   init_manager(&m, &t, &i);
   execute_work(&m, &t);
 
-  // for (inst_node_t x : i.inst_nodes){
-  //   if(x.type != inst_leaf){
-  //     insert_key(&t, x.value);
-  //   }
-  // }
-
+  
   print_tree(&t);
 
   auto end = chrono::high_resolution_clock::now();
   auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
-  cout << "time: " << duration.count() << endl;
+  cout << "time: " << duration.count() << " microseconds" << endl;
 }
