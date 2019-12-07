@@ -38,8 +38,6 @@ void *search_thread(void *search_arg)
 
   search_obj = (thread_object_t *) search_arg;
 
-  //wait until all threads are initialized
-  while(!search_obj->m->start_work);
 
   while((index = get_index(search_obj->m, false)) < search_obj->m->search_actions_length){
     cout << search_obj->id << "-SEARCH: " << search_obj->m->search_actions[index].value << endl;
@@ -59,8 +57,6 @@ void *mod_thread(void *mod_arg)
 
   mod_obj = (thread_object_t *) mod_arg;
 
-  //wait until all threads are initialized
-  while(!mod_obj->m->start_work);
 
   while((index = get_index(mod_obj->m, true)) < mod_obj->m->mod_actions_length){
     cout << mod_obj->id << "-MOD: " << mod_obj->m->mod_actions[index].value << endl;
