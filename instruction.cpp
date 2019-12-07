@@ -72,7 +72,7 @@ void set_actions(instruction *i, string s){
 		action.type = type;
 		action.value = value;
 
-		i->actions.push_back(action);
+		i->actions.push_back(&action);
 		i->actions_length++;
 
 		s.erase(0, pos + delimiter.length());

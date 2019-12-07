@@ -28,13 +28,13 @@ typedef struct inst_node {
 
 class instruction {
 public:
-instruction() :  num_search_threads(0), num_mod_threads(0),actions_length(0), inst_nodes(0), 
+instruction() :  num_search_threads(0), num_mod_threads(0),actions_length(0), inst_nodes(0),
 	actions(0){};
 uint16_t num_search_threads;
 uint16_t num_mod_threads;
 uint16_t actions_length;
 std::vector<inst_node_t> inst_nodes;
-std::vector<action_t> actions;
+std::vector<action_t *> actions;
 };
 
 int read_instruction(instruction *i, char *file);
