@@ -90,44 +90,49 @@ void *thread_function(void *args){
 
 
 void execute_work(manager *m, rbtree *t, instruction *inst){
-	int i;
+	int i, mod_count, search_count;
 	pthread_t thread_id[inst->num_mod_threads + inst->num_search_threads];
 	thread_object_t *thread_args;
 
+	i = mod_count = search_count = 0;
 
-	for(i=0; i<inst->num_mod_threads; i++) {
-		thread_args = new thread_object_t;
-		thread_args->m = m;
-		thread_args->t = t;
-		thread_args->id = i;
-		thread_args->is_mod = true;
+	while((mod_count + search_count) < (inst->num_mod_threads + inst->num_search_threads)){
+		if(mod_count < inst->num_mod_threads){
+			thread_args = new thread_object_t;
+			thread_args->m = m;
+			thread_args->t = t;
+			thread_args->id = i;
+			thread_args->is_mod = true;
 
-		if(!m->mod_actions->empty()){
-			thread_args->action = m->mod_actions->front();
-			m->mod_actions->pop();
-		} else{
-			thread_args->action = NULL;
+			if(!m->mod_actions->empty()){
+				thread_args->action = m->mod_actions->front();
+				m->mod_actions->pop();
+			} else{
+				thread_args->action = NULL;
+			}
+			pthread_create(&thread_id[i++], NULL, thread_function, thread_args);
+			mod_count++;
 		}
+		if(search_count < inst->num_search_threads){
+			thread_args = new thread_object_t;
+			thread_args->m = m;
+			thread_args->t = t;
+			thread_args->id = i;
+			thread_args->is_mod = false;
 
-		pthread_create(&thread_id[i], NULL, thread_function, thread_args);
-	}
-	for(i=0; i<inst->num_search_threads; i++) {
-		thread_args = new thread_object_t;
-		thread_args->m = m;
-		thread_args->t = t;
-		thread_args->id = i;
-		thread_args->is_mod = false;
-
-		if(!m->search_actions->empty()){
-			thread_args->action = m->search_actions->front();
-			m->search_actions->pop();
-		} else{
-			thread_args->action = NULL;
+			if(!m->search_actions->empty()){
+				thread_args->action = m->search_actions->front();
+				m->search_actions->pop();
+			} else{
+				thread_args->action = NULL;
+			}
+			pthread_create(&thread_id[i++], NULL, thread_function, thread_args);
+			search_count++;
 		}
-
-
-		pthread_create(&thread_id[i+inst->num_mod_threads], NULL, thread_function, thread_args);
 	}
+
+
+
 	m->start_work = true;
 
 	for(i=0; i<(inst->num_mod_threads + inst->num_search_threads); i++) {
