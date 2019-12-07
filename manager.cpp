@@ -118,7 +118,7 @@ void execute_work(manager *m, rbtree *t, instruction *inst){
 		thread_args = new thread_object_t;
 		thread_args->m = m;
 		thread_args->t = t;
-		thread_args->id = i+inst->num_mod_threads;
+		thread_args->id = i;
 		thread_args->is_mod = false;
 
 		if(!m->search_actions->empty()){
@@ -129,11 +129,11 @@ void execute_work(manager *m, rbtree *t, instruction *inst){
 		}
 
 
-		pthread_create(&thread_id[i+inst->num_search_threads], NULL, thread_function, thread_args);
+		pthread_create(&thread_id[i+inst->num_mod_threads], NULL, thread_function, thread_args);
 	}
 	m->start_work = true;
 
-	for(i=0; i<(inst->num_mod_threads + inst->num_search_threads	); i++) {
+	for(i=0; i<(inst->num_mod_threads + inst->num_search_threads); i++) {
 		pthread_join(thread_id[i], NULL);
 	}
 
@@ -164,7 +164,6 @@ void init_manager(manager *m, rbtree *t, instruction *i){
 	 m->mod_actions = new queue<action_t *>;
 
 	for(action_t* a:i->actions) {
-		cout << a->value << endl;
 		if(a->type == act_search) {
 			m->search_actions->push(a);
 		}

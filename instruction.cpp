@@ -49,13 +49,14 @@ void set_actions(instruction *i, string s){
 	string token, delimiter;
 	int value;
 	action_type type;
-	action_t action;
+	action_t *action;
 
 	delimiter = ")";
 	value = 0;
 
 	size_t pos = 0;
 	while ((pos = s.find(delimiter)) != string::npos) {
+		action = new action_t;
 
 		token = s.substr(0, pos);
 		if(token.find("insert") != string::npos) {
@@ -69,10 +70,10 @@ void set_actions(instruction *i, string s){
 		}
 		value = stoi(token.substr(token.find("(") + 1, token.find(")")));
 
-		action.type = type;
-		action.value = value;
+		action->type = type;
+		action->value = value;
 
-		i->actions.push_back(&action);
+		i->actions.push_back(action);
 		i->actions_length++;
 
 		s.erase(0, pos + delimiter.length());
