@@ -10,10 +10,55 @@ using namespace std;
 typedef struct thread_object {
 	rbtree *t;
 	manager *m;
-	action_t *action;
 	bool is_mod;
 	uint16_t id;
 } thread_object_t;
+
+action_t *get_action(manager *m, bool is_mod){
+	//Mod Thread Update
+	action_t *action;
+	if(is_mod) {
+		if(!m->mod_actions->empty()) {
+			sem_wait(m->mod_sem);
+			//Check empty after sempahore is locked
+			if(!m->mod_actions->empty()) {
+				action = m->mod_actions->front();
+				m->mod_actions->pop();
+				sem_post(m->mod_sem);
+				return action;
+			}
+			else{
+				sem_post(m->mod_sem);
+				return NULL;
+			}
+		}
+		//If empty on initial check
+		else{
+			return NULL;
+		}
+	}
+	//Search Thread Update
+	else{
+		if(!m->search_actions->empty()) {
+			sem_wait(m->search_sem);
+			//Check empty after sempahore is locked
+			if(!m->search_actions->empty()) {
+				action = m->search_actions->front();
+				m->search_actions->pop();
+				sem_post(m->search_sem);
+				return action;
+			}
+			else{
+				sem_post(m->search_sem);
+				return NULL;
+			}
+		}
+		//If empty on initial check
+		else{
+			return NULL;
+		}
+	}
+}
 
 
 void *thread_function(void *args){
@@ -26,9 +71,7 @@ void *thread_function(void *args){
 	m=thread_obj->m;
 	t=thread_obj->t;
 
-	while(thread_obj->action != NULL) {
-		action=thread_obj->action;
-
+	while((action = get_action(m, thread_obj->is_mod)) != NULL) {
 		if(action->type == act_search) {
 			cout << thread_obj->id << "-SEARCH: " << action->value << endl;
 			search_tree(t, action->value);
@@ -43,90 +86,27 @@ void *thread_function(void *args){
 			cout << thread_obj->id << "-DELETE: " << action->value << endl;
 			delete_key(t, action->value);
 		}
-
-		//Mod Thread Update
-		if(thread_obj->is_mod) {
-			//If already empty then we are done
-			if(!m->mod_actions->empty()) {
-				sem_wait(m->mod_sem);
-				//Check empty after sempahore is locked
-				if(!m->mod_actions->empty()) {
-					thread_obj->action = m->mod_actions->front();
-					m->mod_actions->pop();
-				} else{
-					thread_obj->action = NULL;
-					break;
-				}
-				sem_post(m->mod_sem);
-			}
-			else{
-				thread_obj->action = NULL;
-				break;
-			}
-		}
-
-		//Search Thread Update
-		else{
-			if(!m->search_actions->empty()) {
-				sem_wait(m->search_sem);
-				//Check empty after sempahore is locked
-				if(!m->search_actions->empty()) {
-					thread_obj->action = m->search_actions->front();
-					m->search_actions->pop();
-				} else{
-					thread_obj->action = NULL;
-					break;
-				}
-				sem_post(m->search_sem);
-			}
-			else{
-				thread_obj->action = NULL;
-				break;
-			}
-		}
 	}
 	return 0;
 }
 
 
 void execute_work(manager *m, rbtree *t, instruction *inst){
-	int i, mod_count, search_count;
+	uint16_t i, mod_count, search_count;
 	pthread_t thread_id[inst->num_mod_threads + inst->num_search_threads];
-	thread_object_t *thread_args;
+	thread_object_t thread_args;
 
 	i = mod_count = search_count = 0;
 
 	while((mod_count + search_count) < (inst->num_mod_threads + inst->num_search_threads)){
 		if(mod_count < inst->num_mod_threads){
-			thread_args = new thread_object_t;
-			thread_args->m = m;
-			thread_args->t = t;
-			thread_args->id = i;
-			thread_args->is_mod = true;
-
-			if(!m->mod_actions->empty()){
-				thread_args->action = m->mod_actions->front();
-				m->mod_actions->pop();
-			} else{
-				thread_args->action = NULL;
-			}
-			pthread_create(&thread_id[i++], NULL, thread_function, thread_args);
+			thread_args = {t, m, true, i};
+			pthread_create(&thread_id[i++], NULL, thread_function, &thread_args);
 			mod_count++;
 		}
 		if(search_count < inst->num_search_threads){
-			thread_args = new thread_object_t;
-			thread_args->m = m;
-			thread_args->t = t;
-			thread_args->id = i;
-			thread_args->is_mod = false;
-
-			if(!m->search_actions->empty()){
-				thread_args->action = m->search_actions->front();
-				m->search_actions->pop();
-			} else{
-				thread_args->action = NULL;
-			}
-			pthread_create(&thread_id[i++], NULL, thread_function, thread_args);
+			thread_args = {t, m, false, i};
+			pthread_create(&thread_id[i++], NULL, thread_function, &thread_args);
 			search_count++;
 		}
 	}
