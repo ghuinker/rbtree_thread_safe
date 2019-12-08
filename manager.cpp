@@ -14,6 +14,13 @@ typedef struct thread_object {
 	uint16_t id;
 } thread_object_t;
 
+/*
+        Function: Get and pop the next action to be run from queue.
+        Parameters:
+                m: the manager object.
+                is_mod: if the calling thread is a mod thread or search thread.
+        Return Value: action_t: the next action or null
+ */
 action_t *get_action(manager *m, bool is_mod){
 	//Mod Thread Update
 	action_t *action;
@@ -60,7 +67,15 @@ action_t *get_action(manager *m, bool is_mod){
 	}
 }
 
-
+/*
+        Function: The thread running on child threads.
+        Parameters: (thread_object_t *) args
+                t: the RBTree.
+                m: the manager.
+                is_mod: if the thread runs mod actions or search actions
+                id: the id of the thread
+        Return Value: void
+ */
 void *thread_function(void *args){
 	thread_object_t *thread_obj;
 	action_t *action;
@@ -90,7 +105,14 @@ void *thread_function(void *args){
 	return 0;
 }
 
-
+/*
+        Function: Create and wait for all threads to run to completion.
+        Parameters:
+                t: the RBTree.
+                m: the manager.
+                i: the instructions.
+        Return Value: void
+ */
 void execute_work(manager *m, rbtree *t, instruction *inst){
 	uint16_t i, mod_count, search_count;
 	pthread_t thread_id[inst->num_mod_threads + inst->num_search_threads];
@@ -98,13 +120,13 @@ void execute_work(manager *m, rbtree *t, instruction *inst){
 
 	i = mod_count = search_count = 0;
 
-	while((mod_count + search_count) < (inst->num_mod_threads + inst->num_search_threads)){
-		if(mod_count < inst->num_mod_threads){
+	while((mod_count + search_count) < (inst->num_mod_threads + inst->num_search_threads)) {
+		if(mod_count < inst->num_mod_threads) {
 			thread_args = new thread_object_t{t, m, true, i};
 			pthread_create(&thread_id[i++], NULL, thread_function, thread_args);
 			mod_count++;
 		}
-		if(search_count < inst->num_search_threads){
+		if(search_count < inst->num_search_threads) {
 			thread_args = new thread_object_t{t, m, false, i};
 			pthread_create(&thread_id[i++], NULL, thread_function, thread_args);
 			search_count++;
@@ -121,29 +143,23 @@ void execute_work(manager *m, rbtree *t, instruction *inst){
 
 }
 
-//Init queues and set thread numbers and meta data
-//Also init thread objects
+/*
+        Function: Initialize manager.
+        Parameters:
+                t: the RBTree.
+                m: the manager.
+                i: the instructions.
+        Return Value: void
+ */
 void init_manager(manager *m, rbtree *t, instruction *i){
 	// Init semaphores
 	m->mod_sem = new sem_t;
 	m->search_sem = new sem_t;
 	sem_init(m->mod_sem, 0, 1);
 	sem_init(m->search_sem, 0, 1);
-	//Remember to destoruy
 
-	/*
-	   Left off:
-	   Init sempahores in this and rbtree
-	   then add mod_objects and search objects to manager
-	   then in execute do for each mod_object in whatever
-	   then for now print result of everything for testing
-
-	   then add result node and id to object
-
-	 */
-
-	 m->search_actions = new queue<action_t *>;
-	 m->mod_actions = new queue<action_t *>;
+	m->search_actions = new queue<action_t *>;
+	m->mod_actions = new queue<action_t *>;
 
 	for(action_t* a:i->actions) {
 		if(a->type == act_search) {

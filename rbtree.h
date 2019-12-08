@@ -11,6 +11,7 @@ enum __attribute__ ((__packed__)) node_color {
   BLACK
 };
 
+//A node the the Rbtree
 typedef struct node {
   int key;
   node *left;
@@ -19,6 +20,7 @@ typedef struct node {
   node_color color;
 } node_t;
 
+//The RBTree object.
 class rbtree {
   public:
     rbtree(): root{0}, reader_count(0){};

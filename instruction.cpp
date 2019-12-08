@@ -5,6 +5,13 @@ using namespace std;
 
 #include "instruction.h"
 
+/*
+	Function: Parse the initial tree nodes from the file string.
+	Parameters:
+		i: the instruction class to set the nodes to.
+		s: the string of initial setup of the tree
+	Return Value: void.
+*/
 void set_inst_nodes(instruction *i, string s){
 	string token, delimiter;
 	inst_node_type type;
@@ -45,6 +52,13 @@ void set_inst_nodes(instruction *i, string s){
 	}
 }
 
+/*
+	Function: Parse the actions from the file.
+	Parameters:
+		i: the instruction class to set the nodes to.
+		s: the string of actions to run against the tree.
+	Return Value: void.
+*/
 void set_actions(instruction *i, string s){
 	string token, delimiter;
 	int value;
@@ -80,6 +94,13 @@ void set_actions(instruction *i, string s){
 	}
 }
 
+/*
+	Function: Initial function that reads and delegates parsing of file.
+	Parameters:
+		i: the instruction object.
+		file: the filename inputted by user.
+	Return Value: int: if_succesful.
+*/
 int read_instruction(instruction *i, char *file){
 	string line, init_tree, actions;
 	ifstream f(file);

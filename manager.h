@@ -7,7 +7,7 @@
 #include "instruction.h"
 # include "rbtree.h"
 
-
+//The manager responsible for information regaurding the threading.
 class manager {
 public:
 manager() : start_work(false),

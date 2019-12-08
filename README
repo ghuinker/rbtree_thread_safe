@@ -1,0 +1,26 @@
+CONTENTS OF THIS FILE:
+* Introduction
+* Build Instructions
+* Run Instructions
+* Clean Instructions
+* Requirements
+* Extra
+
+INTRODUCTION:
+COMS 352 Project 2, Concurrent Red-Black Trees. Created by Gabe Huinker.
+
+Build Instructions:
+make
+
+Run Instructions:
+./tree <filename>
+
+Clean Instructions:
+make clean
+
+Requirements:
+c++ and pthread library
+
+Extra:
+* 1 in 100 runs with large data sets may cause a segmentation fault.
+    Still looking into this.

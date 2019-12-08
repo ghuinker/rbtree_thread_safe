@@ -5,6 +5,12 @@ using namespace std;
 
 #include "rbtree.h"
 
+/*
+        Functions: Signal or wait calls on the respoective rbtree.
+        Parameters:
+                t: the RBTree.
+        Return Value: void
+ */
 void signal_wsem(rbtree *t){
 	sem_wait(t->wsem);
 };
@@ -18,6 +24,13 @@ void wait_x(rbtree *t){
 	sem_wait(t->x);
 };
 
+/*
+        Functions: Helper function to print tree from respective node.
+        Parameters:
+                node: the tree node.
+								is_root: if the node is root node
+        Return Value: void
+ */
 void print_tree(node_t *node, bool is_root)
 {
 	if (node == NULL) {
@@ -42,6 +55,14 @@ void init_sems(rbtree *t){
 	sem_init(t->x, 0, 1);
 }
 
+/*
+        Functions: Recursive function to set all nodes in tree from instruction object
+        Parameters:
+                i: the instructions.
+								parent: the calling node (to set parent)
+								index: the index in the instruction object of current node to set
+        Return Value: node_t the node set
+ */
 node_t* set_node(instruction *i, node_t *parent, uint16_t *index){
 	node_t *node;
 	++(*index);
@@ -201,6 +222,13 @@ void insert_fix_tree(node_t *&root, node_t *&node){
 	root->color = BLACK;
 }
 
+/*
+        Functions: Recursive function to find and insert a new node
+        Parameters:
+                root: node to compare against.
+								node: the inserting node
+        Return Value: node_t the node set
+ */
 node_t* insert_node(node_t *&root, node_t *&node){
 	if( root == NULL || &*root == NULL) {
 		root = node;
@@ -316,7 +344,12 @@ void fix_double_back(node_t *&root, node_t *&node) {
 	}
 }
 
-
+/*
+        Functions: Get the node that will replace the deleting node
+        Parameters:
+                node: the node that is being deleted.
+        Return Value: node_t: the replacement node
+ */
 node_t* replacement_node(node_t *&node){
 	node_t *temp;
 	if(node->left != NULL && node->right != NULL) {
