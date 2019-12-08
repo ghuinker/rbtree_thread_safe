@@ -45,4 +45,5 @@ int main(int argc, char *argv[]){
   auto end = chrono::high_resolution_clock::now();
   auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
   io_save(&m, &t, duration.count());
+  print_tree(&t);
 }

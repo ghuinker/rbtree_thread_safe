@@ -1,4 +1,4 @@
-Execution Time: 5352
+Execution Time: 14217
 search(1)-> true:, performed by thread: 1
 search(74)-> false:, performed by thread: 1
 search(100)-> false:, performed by thread: 1
@@ -6,17 +6,17 @@ search(563)-> false:, performed by thread: 1
 search(33)-> false:, performed by thread: 1
 search(679)-> false:, performed by thread: 1
 search(64)-> false:, performed by thread: 1
-search(472)-> false:, performed by thread: 1
+search(472)-> true:, performed by thread: 1
 search(112)-> false:, performed by thread: 1
 search(51)-> true:, performed by thread: 1
-search(242)-> false:, performed by thread: 1
+search(242)-> true:, performed by thread: 1
 search(35)-> false:, performed by thread: 1
-search(197)-> false:, performed by thread: 1
+search(197)-> true:, performed by thread: 1
 search(791)-> false:, performed by thread: 1
 search(66)-> false:, performed by thread: 1
 search(46)-> false:, performed by thread: 1
 search(833)-> false:, performed by thread: 1
-search(36)-> false:, performed by thread: 1
+search(36)-> true:, performed by thread: 1
 search(74)-> false:, performed by thread: 1
 search(24)-> false:, performed by thread: 1
 search(225)-> false:, performed by thread: 1
@@ -30,12 +30,12 @@ search(9)-> true:, performed by thread: 1
 search(77)-> true:, performed by thread: 1
 search(89)-> false:, performed by thread: 1
 search(4)-> false:, performed by thread: 1
-search(150)-> false:, performed by thread: 1
+search(150)-> true:, performed by thread: 1
 search(128)-> false:, performed by thread: 1
-search(7)-> false:, performed by thread: 1
+search(7)-> true:, performed by thread: 1
 search(84)-> false:, performed by thread: 1
 search(94)-> false:, performed by thread: 1
-search(10)-> false:, performed by thread: 1
+search(10)-> true:, performed by thread: 1
 search(3)-> false:, performed by thread: 1
 search(5)-> false:, performed by thread: 1
 search(13)-> false:, performed by thread: 1
@@ -45,27 +45,27 @@ search(47)-> true:, performed by thread: 1
 search(112)-> false:, performed by thread: 1
 search(51)-> true:, performed by thread: 1
 search(22)-> true:, performed by thread: 1
-search(35)-> false:, performed by thread: 1
-search(97)-> false:, performed by thread: 1
+search(35)-> true:, performed by thread: 1
+search(97)-> true:, performed by thread: 1
 search(71)-> false:, performed by thread: 1
-search(66)-> false:, performed by thread: 1
+search(66)-> true:, performed by thread: 1
 search(406)-> false:, performed by thread: 1
-search(83)-> false:, performed by thread: 1
+search(83)-> true:, performed by thread: 1
 search(36)-> true:, performed by thread: 1
-search(74)-> false:, performed by thread: 1
-search(24)-> false:, performed by thread: 1
+search(74)-> true:, performed by thread: 1
+search(24)-> true:, performed by thread: 1
 search(225)-> false:, performed by thread: 1
-search(28)-> false:, performed by thread: 1
+search(28)-> true:, performed by thread: 1
 search(86)-> true:, performed by thread: 1
-search(25)-> false:, performed by thread: 1
+search(25)-> true:, performed by thread: 1
 search(102)-> false:, performed by thread: 1
-search(11)-> false:, performed by thread: 1
-search(21)-> false:, performed by thread: 1
+search(11)-> true:, performed by thread: 1
+search(21)-> true:, performed by thread: 1
 search(9)-> true:, performed by thread: 1
 search(77)-> true:, performed by thread: 1
-search(89)-> false:, performed by thread: 1
-search(4)-> false:, performed by thread: 1
-search(15)-> false:, performed by thread: 1
+search(89)-> true:, performed by thread: 1
+search(4)-> true:, performed by thread: 1
+search(15)-> true:, performed by thread: 1
 search(12)-> true:, performed by thread: 1
 search(14)-> true:, performed by thread: 3
-,f,f,1b,f,f,4b,2r,f,f,8b,7b,f,f,f,11r,10b,f,f,13r,f,f,15r,14b,12b,9r,f,f,f,18r,17b,f,f,f,21r,20b,19r,f,f,f,25r,24b,f,f,f,28r,27b,26r,22b,16b,f,f,31b,f,f,33r,f,f,35r,34b,32r,f,f,37r,f,f,39r,38b,36b,f,f,41b,f,f,43r,f,44b,42b,40r,f,f,f,48r,47b,f,f,50b,49b,46b,29r,f,f,52b,f,f,f,55r,54b,53b,f,f,57b,f,f,60b,f,f,62b,61r,58b,56r,f,f,66b,f,f,68b,67b,f,f,f,72r,71b,f,f,74b,73r,f,f,76b,75b,70r,63b,f,f,78b,f,f,80r,f,81b,79r,f,f,83r,f,84b,82b,f,f,87b,f,f,89r,f,90b,f,f,92b,91r,88b,85b,77r,51b,f,f,94b,f,f,f,97r,96b,95r,f,f,f,100r,99b,98b,f,f,104b,f,f,106r,f,107b,105b,101r,f,f,113r,f,120b,f,f,125r,f,f,129r,126b,f,f,f,136r,132b,131r,123b,109b,f,f,140r,f,f,151r,150b,f,f,158r,f,161b,f,f,163b,162r,157b,f,f,169r,f,176b,f,f,179b,178b,167r,f,f,184r,f,187b,f,f,191r,f,194b,188r,f,f,197b,f,f,204b,f,f,206r,f,209b,205r,200r,195b,180b,139b,93r,f,f,217r,f,220b,f,f,223b,f,f,f,235r,232b,231r,222b,f,f,238b,f,f,242b,f,f,245r,f,248b,243r,239b,f,f,f,256r,254b,f,f,258r,f,f,261r,259b,257b,250r,236b,f,f,f,269r,266b,f,f,272r,f,273b,271r,f,f,283r,f,287b,277b,f,f,f,293r,292b,f,f,301b,299r,f,f,f,317r,303b,f,f,323r,f,326b,320r,302b,290b,f,f,338b,f,f,341r,f,f,350r,344b,340b,f,f,365b,f,f,369r,f,378b,366r,f,f,386r,f,f,392r,390b,f,f,397b,395r,381b,354r,f,f,401r,f,415b,f,f,419r,f,f,427r,423b,416r,f,f,f,438r,436b,431b,398b,328r,262b,212b,f,f,444b,f,f,f,452r,451b,445r,f,f,461b,f,f,463r,f,467b,462r,453b,f,f,470b,f,f,f,476r,473b,f,f,479b,478r,472b,468r,f,f,484b,f,f,f,493r,490b,487r,f,f,497r,f,499b,f,f,504b,500r,496b,f,f,511b,f,f,517r,f,f,521r,518b,512b,510r,482b,f,f,525r,f,f,528r,527b,f,f,534b,529r,f,f,542r,f,544b,f,f,552r,f,f,555r,554b,546r,538b,f,f,557r,f,f,560r,559b,f,f,565b,564r,f,f,567r,f,571b,566b,556b,f,f,573r,f,f,578r,575b,f,f,583r,f,586b,f,f,593b,592r,582b,f,f,596b,f,f,601r,f,607b,598r,f,f,613r,f,f,619r,618b,608b,f,f,625b,f,f,f,630r,629b,f,f,637b,634r,628b,623r,594b,572r,522b,f,f,650r,f,f,654r,652b,f,f,657r,f,658b,655r,f,f,f,666r,665b,663b,f,f,675b,f,f,f,688r,684b,676b,f,f,693r,f,f,706r,698b,f,f,713r,f,715b,f,f,727b,723r,708b,690r,667b,f,f,732r,f,737b,f,f,743b,f,f,f,749r,748b,745r,741b,f,f,757r,f,f,760r,759b,f,f,762r,f,767b,761b,755r,f,f,778r,f,f,790r,779b,f,f,797r,f,802b,795r,f,f,f,810r,806b,804b,775b,728b,642r,f,f,815r,f,819b,f,f,822r,f,824b,821r,f,f,827b,f,f,836r,f,f,839r,838b,834r,825b,f,f,846b,f,f,850r,f,852b,848b,843b,f,f,856b,f,f,862r,f,f,874r,863b,859r,f,f,879b,f,f,882r,f,f,886r,884b,880r,876b,f,f,891r,f,898b,f,f,906b,899r,f,f,913b,907b,f,f,919b,f,f,f,925r,923b,922b,917r,889b,853r,f,f,936r,f,f,938r,937b,f,f,944r,f,947b,940r,f,f,950r,f,f,958r,952b,948b,f,f,980r,f,982b,f,f,987b,984r,f,f,f,993r,992b,f,f,1000b,995r,991b,976b,935b,812b443b
+443b,205b,93r,51b,29r,16b,9r,7b,2r,1b,f,f,4b,f,f,8b,f,f,12b,10b,f,11r,f,f,14b,13r,f,f,15r,f,f,22b,19r,17b,f,18r,f,f,20b,f,21r,f,f,26r,24b,f,25r,f,f,27b,f,28r,f,f,46b,40r,36b,32r,31b,f,f,34b,33r,f,f,35r,f,f,38b,37r,f,f,39r,f,f,42b,41b,f,f,44b,43r,f,f,f,49b,47b,f,48r,f,f,50b,f,f,77r,63b,56r,53b,52b,f,f,54b,f,55r,f,f,58b,57b,f,f,61r,60b,f,f,62b,f,f,70r,67b,66b,f,f,68b,f,f,75b,73r,71b,f,72r,f,f,74b,f,f,76b,f,f,84b,82b,79r,78b,f,f,81b,80r,f,f,f,83b,f,f,88b,85b,f,87r,f,f,91r,90b,89r,f,f,f,92b,f,f,150b,109b,101r,98b,95r,94b,f,f,96b,f,97r,f,f,99b,f,100r,f,f,105b,104b,f,f,107b,106r,f,f,f,131b,123r,120b,113r,f,f,f,126b,125r,f,f,129r,f,f,139r,132b,f,136r,f,f,140b,f,f,179b,163b,157r,151b,f,f,161b,158r,f,f,162r,f,f,176r,167b,f,169r,f,f,178b,f,f,188b,184b,180r,f,f,187r,f,f,197r,194b,191r,f,f,195r,f,f,200b,f,204r,f,f,257b,236b,222b,217r,209b,206r,f,f,212r,f,f,220b,f,f,231r,223b,f,f,232b,f,235r,f,f,243b,239r,238b,f,f,242b,f,f,250r,248b,245r,f,f,f,254b,f,256r,f,f,320r,290b,271b,262r,259b,258r,f,f,261r,f,f,266b,f,269r,f,f,277r,273b,272r,f,f,f,287b,283r,f,f,f,299b,292b,f,293r,f,f,302r,301b,f,f,303b,f,317r,f,f,381b,341b,328r,326b,323r,f,f,f,338b,f,340r,f,f,365r,350b,344r,f,f,354r,f,f,369b,366r,f,f,378r,f,f,415r,398b,395r,390b,386r,f,f,392r,f,f,397b,f,f,401b,f,f,431b,419r,416b,f,f,427b,423r,f,f,f,436b,f,438r,f,f,812b,642r,522b,482b,468r,462b,451r,444b,f,445r,f,f,453b,452r,f,f,461r,f,f,467b,463r,f,f,f,472b,470b,f,f,478r,473b,f,476r,f,f,479b,f,f,510r,496b,487r,484b,f,f,490b,f,493r,f,f,500r,499b,497r,f,f,f,504b,f,f,512b,511b,f,f,518b,517r,f,f,521r,f,f,572r,556b,538b,529r,527b,525r,f,f,528r,f,f,534b,f,f,546r,544b,542r,f,f,f,554b,552r,f,f,555r,f,f,566b,564r,559b,557r,f,f,560r,f,f,565b,f,f,571b,567r,f,f,f,594b,582b,575b,573r,f,f,578r,f,f,592r,586b,583r,f,f,f,593b,f,f,623r,608b,598r,596b,f,f,607b,601r,f,f,f,618b,613r,f,f,619r,f,f,628b,625b,f,f,634r,629b,f,630r,f,f,637b,f,f,755b,676b,658b,654r,652b,650r,f,f,f,655b,f,657r,f,f,665r,663b,f,f,667b,666r,f,f,675r,f,f,728r,706b,688r,684b,f,f,693b,690r,f,f,698r,f,f,715r,708b,f,713r,f,f,727b,723r,f,f,f,741b,737b,732r,f,f,f,745r,743b,f,f,748b,f,749r,f,f,775b,761b,759b,757r,f,f,760r,f,f,767b,762r,f,f,f,804b,795r,779b,778r,f,f,790r,f,f,802b,797r,f,f,f,806b,f,810r,f,f,935b,853r,843b,825b,821r,819b,815r,f,f,f,824b,822r,f,f,f,834r,827b,f,f,838b,836r,f,f,839r,f,f,848b,846b,f,f,852b,850r,f,f,f,889b,876b,859r,856b,f,f,863b,862r,f,f,874r,f,f,880r,879b,f,f,884b,882r,f,f,886r,f,f,917r,907b,899r,898b,891r,f,f,f,906b,f,f,913b,f,f,922b,919b,f,f,923b,f,925r,f,f,976b,948b,940r,937b,936r,f,f,938r,f,f,947b,944r,f,f,f,952b,950r,f,f,958r,f,f,991b,984r,982b,980r,f,f,f,987b,f,f,995r,992b,f,993r,f,f,1000b,f,f

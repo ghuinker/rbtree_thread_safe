@@ -14,6 +14,7 @@ make
 
 Run Instructions:
 ./tree <filename>
+output is saved to output.txt
 
 Clean Instructions:
 make clean
@@ -24,3 +25,5 @@ c++ and pthread library
 Extra:
 * 1 in 100 runs with large data sets may cause a segmentation fault.
     Still looking into this.
+* A few threads perform a large amount of the actions.
+  I don't know if this is computer specific or implementation.
