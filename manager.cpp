@@ -81,6 +81,7 @@ void *thread_function(void *args){
 	action_t *action;
 	manager *m;
 	rbtree *t;
+	search_result_t *sr;
 
 	thread_obj = (thread_object_t *) args;
 	m=thread_obj->m;
@@ -89,7 +90,16 @@ void *thread_function(void *args){
 	while((action = get_action(m, thread_obj->is_mod)) != NULL) {
 		if(action->type == act_search) {
 			// cout << thread_obj->id << "-SEARCH: " << action->value << endl;
-			search_tree(t, action->value);
+			sr = new search_result_t;
+			sr->found = false;
+			sr->action = action;
+			sr->thread_id = thread_obj->id;
+			if(search_tree(t, action->value) != NULL){
+				sr->found = true;
+			}
+			sem_wait(m->result_sem);
+			m->search_results->push_back(sr);
+			sem_post(m->result_sem);
 		}
 
 		else if(action->type == act_insert) {
@@ -134,9 +144,6 @@ void execute_work(manager *m, rbtree *t, instruction *inst){
 	}
 
 
-
-	m->start_work = true;
-
 	for(i=0; i<(inst->num_mod_threads + inst->num_search_threads); i++) {
 		pthread_join(thread_id[i], NULL);
 	}
@@ -155,11 +162,14 @@ void init_manager(manager *m, rbtree *t, instruction *i){
 	// Init semaphores
 	m->mod_sem = new sem_t;
 	m->search_sem = new sem_t;
+	m->result_sem = new sem_t;
 	sem_init(m->mod_sem, 0, 1);
 	sem_init(m->search_sem, 0, 1);
+	sem_init(m->result_sem, 0, 1);
 
 	m->search_actions = new queue<action_t *>;
 	m->mod_actions = new queue<action_t *>;
+	m->search_results = new vector<search_result_t *>;
 
 	for(action_t* a:i->actions) {
 		if(a->type == act_search) {
