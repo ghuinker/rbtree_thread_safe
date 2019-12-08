@@ -202,15 +202,17 @@ void insert_fix_tree(node_t *&root, node_t *&node){
 }
 
 node_t* insert_node(node_t *&root, node_t *&node){
-	if( root == NULL) {
+	if( root == NULL || &*root == NULL) {
 		root = node;
 	}
 	if(node->key < root->key) {
 		root->left = insert_node(root->left, node);
+		if(root->left != NULL)
 		root->left->parent = root;
 	}
 	else if(node->key > root->key) {
 		root->right = insert_node(root->right, node);
+		if(root->right != NULL)
 		root->right->parent = root;
 	}
 	return root;

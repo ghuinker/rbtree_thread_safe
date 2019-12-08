@@ -73,17 +73,17 @@ void *thread_function(void *args){
 
 	while((action = get_action(m, thread_obj->is_mod)) != NULL) {
 		if(action->type == act_search) {
-			cout << thread_obj->id << "-SEARCH: " << action->value << endl;
+			// cout << thread_obj->id << "-SEARCH: " << action->value << endl;
 			search_tree(t, action->value);
 		}
 
 		else if(action->type == act_insert) {
-			cout << thread_obj->id << "-INSERT: " << action->value << endl;
+			// cout << thread_obj->id << "-INSERT: " << action->value << endl;
 			insert_key(t, action->value);
 		}
 
 		else if(action->type == act_delete) {
-			cout << thread_obj->id << "-DELETE: " << action->value << endl;
+			// cout << thread_obj->id << "-DELETE: " << action->value << endl;
 			delete_key(t, action->value);
 		}
 	}
