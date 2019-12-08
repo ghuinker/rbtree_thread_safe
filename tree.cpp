@@ -6,6 +6,8 @@ using namespace std;
 #include "instruction.h"
 #include "rbtree.h"
 #include "manager.h"
+#include "io.h"
+
 
 int main(int argc, char *argv[]){
   instruction i;
@@ -40,10 +42,7 @@ int main(int argc, char *argv[]){
   init_manager(&m, &t, &i);
   execute_work(&m, &t, &i);
 
-
-  print_tree(&t);
-
   auto end = chrono::high_resolution_clock::now();
   auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
-  cout << "time: " << duration.count() << " microseconds" << endl;
+  io_save(&m, &t, duration.count());
 }

@@ -20,10 +20,10 @@ public:
 manager() :mod_actions(0), search_actions(0)
   {};
 
-queue<action_t *> *mod_actions;
-queue<action_t *> *search_actions;
+std::queue<action_t *> *mod_actions;
+std::queue<action_t *> *search_actions;
 sem_t *mod_sem, *search_sem, *result_sem;
-vector<search_result_t *> *search_results;
+std::vector<search_result_t *> *search_results;
 };
 
 void execute_work(manager *m, rbtree *t, instruction *i);
